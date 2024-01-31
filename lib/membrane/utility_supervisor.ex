@@ -17,7 +17,7 @@ defmodule Membrane.UtilitySupervisor do
           ctx.utility_supervisor,
           {MySupervisor, children: [SomeWorker, OtherWorker], restart: :one_for_one})
       end
-
+  ```
   """
 
   @typedoc """
@@ -26,7 +26,7 @@ defmodule Membrane.UtilitySupervisor do
   @type t :: pid()
 
   @doc """
-  Starts a process under the utility supervisor.
+  Starts a supervised process under the utility supervisor.
 
   Semantics of the `child_spec` argument are the same as in `Supervisor.child_spec/2`.
   """
@@ -37,7 +37,7 @@ defmodule Membrane.UtilitySupervisor do
     as: :start_utility
 
   @doc """
-  Starts a process under the utility supervisor and links it to the current process.
+  Starts a supervised process under the utility supervisor and links it to the current process.
 
   Semantics of the `child_spec` argument are the same as in `Supervisor.child_spec/2`.
   """
