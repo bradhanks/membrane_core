@@ -1,14 +1,13 @@
 defmodule Membrane.Time do
   @moduledoc """
-  Module containing functions needed to perform handling of time.
+  This module contains functions essential for handling time within the Membrane framework.
 
-  Membrane always internally uses nanosecond as a time unit. This is how all time
-  units should represented in the code unless there's a good reason to act
-  differently.
+  Membrane uniformly uses nanoseconds as the internal unit of time. This unit should be should
+  always be used unless there is a compelling reason to do otherwise.
 
-  Please note that Erlang VM may internally use different units and that may
-  differ from platform to platform. Still, unless you need to perform calculations
-  that do not touch hardware clock, you should use Membrane units for consistency.
+  Note that the Erlang VM may use different time units internally, and these can vary
+  across platforms. However, for consistency within the Membrane framework, it is recommended
+  to use Membrane's time units, especially when hardware clock calculations are not involved.
   """
 
   require Ratio
@@ -17,7 +16,7 @@ defmodule Membrane.Time do
             native_units: 1, native_unit: 0, nanoseconds: 1, nanosecond: 0, second: 0, seconds: 1}
 
   @typedoc """
-  The time represented in Membrane's time units.
+  Represents time in Membrane's internal time units.
   """
   @type t :: integer
   @type non_neg :: non_neg_integer
@@ -38,13 +37,12 @@ defmodule Membrane.Time do
   @two_to_pow_32 Ratio.pow(Ratio.new(2, 1), 32) |> Ratio.trunc()
 
   @doc """
-  Checks whether a value is `Membrane.Time.t`.
+  Checks if a value is a valid `Membrane.Time.t`.
   """
   defguard is_time(value) when is_integer(value)
 
   @doc """
-  Returns duration as a string with unit. Chosen unit is the biggest possible
-  that doesn't involve precission loss.
+  Returns duration as a string with the largest possible unit that avoids precision loss.
 
   ## Examples
 
@@ -55,7 +53,6 @@ defmodule Membrane.Time do
       "1 min"
       iex> 2 |> nanoseconds() |> pretty_duration()
       "2 ns"
-
   """
   @spec pretty_duration(t) :: String.t()
   def pretty_duration(time) when is_time(time) do
@@ -65,8 +62,7 @@ defmodule Membrane.Time do
   end
 
   @doc """
-  Returns quoted code producing given amount time. Chosen unit is the biggest possible
-  that doesn't involve precission loss.
+  Generates Elixir code that, when executed, produces the specified amount of time in the chosen unit.
 
   ## Examples
 
@@ -77,7 +73,6 @@ defmodule Membrane.Time do
       quote do #{inspect(__MODULE__)}.minute() end |> Macro.to_string()
       iex> 2 |> nanoseconds() |> to_code() |> Macro.to_string()
       quote do 2 |> #{inspect(__MODULE__)}.nanoseconds() end |> Macro.to_string()
-
   """
   @spec to_code(t) :: Macro.t()
   def to_code(time) when is_time(time) do
