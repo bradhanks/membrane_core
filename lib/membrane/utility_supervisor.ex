@@ -1,8 +1,10 @@
 defmodule Membrane.UtilitySupervisor do
   @moduledoc """
   A supervisor responsible for managing utility processes under the pipeline's
+  A supervisor responsible for managing utility processes under the pipeline's
   supervision tree.
 
+  The supervisor is spawned with each component and can be accessed from callback contexts.
   The supervisor is spawned with each component and can be accessed from callback contexts.
 
   `Membrane.UtilitySupervisor` does not restart processes. Rather, it ensures that these utility processes
@@ -18,6 +20,7 @@ defmodule Membrane.UtilitySupervisor do
           {MySupervisor, children: [SomeWorker, OtherWorker], restart: :one_for_one})
       end
   ```
+  ```
   """
 
   @typedoc """
@@ -26,6 +29,7 @@ defmodule Membrane.UtilitySupervisor do
   @type t :: pid()
 
   @doc """
+  Starts a supervised process under the utility supervisor.
   Starts a supervised process under the utility supervisor.
 
   Semantics of the `child_spec` argument are the same as in `Supervisor.child_spec/2`.
@@ -37,6 +41,7 @@ defmodule Membrane.UtilitySupervisor do
     as: :start_utility
 
   @doc """
+  Starts a supervised process under the utility supervisor and links it to the current process.
   Starts a supervised process under the utility supervisor and links it to the current process.
 
   Semantics of the `child_spec` argument are the same as in `Supervisor.child_spec/2`.
